@@ -95,29 +95,58 @@ def atualiza_peso_sum(iteracao, neuronios, entrada):
     return neuronios
 
 
+def teste_universo(neuronios):
+    restante_universo = [
+        [0, 0, 0],
+        [0, 0, 1],
+        [0, 1, 0],
+        [1, 1, 1],
+    ]
+    print('Teste com restante do universo')
+    for i in range(0, 4):
+        valores = np.empty(3)
+        print('valores de entrada: ', restante_universo[i][0], ' ', restante_universo[i][1], ' ', restante_universo[i][2])
+        for j in range(0, 3):
+            valores[j] = neuronios[j] * restante_universo[i][j]
+        resultado = int(np.sum(valores))
+        if resultado >= 1:
+            resultado = 1
+        print('resultado: ', resultado)
+    print('\n')
+
+
 # entrão os neuronios treinados e realizam seu trabalho
 def trabalho_neuronios(neuronios):
     continuar = "sim"
-    while continuar != "nao":
-        primeira_pergunta = input('Primeira pergunta: ')
+    while continuar == "sim":
+        print('\n')
+        print('Responda as perguntas com sim ou não \n'
+              'Para descobrir se é um estudante de Sistemas de Informação ou Engenharia Civil')
+        primeira_pergunta = input('1-Teve aulas de programação ? ')
         entrada1 = 1 if primeira_pergunta == "sim" else 0
-        segunda_pergunta = input('Segunda pergunta: ')
+        segunda_pergunta = input('2-Teve aula de estatística ? ')
         entrada2 = 1 if segunda_pergunta == "sim" else 0
-        terceira_pergunta = input('Terceira pergunta: ')
+        terceira_pergunta = input('3-Teve aula sobre dimensionamento de barragens ? ')
         entrada3 = 1 if terceira_pergunta == "sim" else 0
         entrada = [entrada1, entrada2, entrada3]
-        print(entrada)
+        print('Entrada para os neuronios:', entrada)
         valores = np.empty(3)
         for i in range(0, 3):
             valores[i] = neuronios[i] * entrada[i]
         resultado = int(np.sum(valores))
         if resultado >= 1:
             resultado = 1
-        print("resultado: ", resultado)
+        resposta = 'Estudante de Sistemas de Informação' if resultado == 0 else 'Estudante de Engenharia Civil'
+        print("Você é:", resposta)
         continuar = input('continuar ? ')
+
+
+def treina_devolve_neuronios():
+    return perceptron_treino(randint(0, 1), randint(0, 1), randint(0, 1))
 
 
 if __name__ == '__main__':
     neuronios_treinados = perceptron_treino(randint(0, 1), randint(0, 1), randint(0, 1))
-    print("Necessário(s) " + str(ciclos) + " ciclo(s) para completar o aprendizado")
+    print("Necessário(s) " + str(ciclos) + " ciclo(s) para completar o aprendizado\n")
+    teste_universo(neuronios_treinados)
     trabalho_neuronios(neuronios_treinados)
